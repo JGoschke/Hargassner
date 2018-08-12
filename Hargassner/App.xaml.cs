@@ -13,9 +13,12 @@ namespace Hargassner
     /// </summary>
     public partial class App : Application
     {
+        static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         protected override void OnStartup(StartupEventArgs e)
         {
+            logger.Trace("OnStartup 1");
             base.OnStartup(e);
+            logger.Trace("OnStartup 2");
 
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();

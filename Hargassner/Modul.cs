@@ -12,16 +12,20 @@ namespace Hargassner
 {
     class Modul : IModule
     {
+        static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly IRegionManager _regionManager;
         private readonly IUnityContainer _container;
         public Modul(IUnityContainer container, IRegionManager regionManager)
         {
             _container = container;
             _regionManager = regionManager;
+            logger.Trace("ctor");
         }
         public void Initialize()
         {
+            logger.Trace("init");
             _regionManager.RegisterViewWithRegion("ContentRegion", typeof(Views.Heizung));
+
         }
     }
 }

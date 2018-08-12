@@ -13,6 +13,7 @@ namespace Hargassner.Model
 {
     class HSV22 : BindableBase, IDisposable
     {
+        static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         const string HEIZUNG = "10.0.2.106";
         enum AnlagenStatus {gestoppt, starten, läuft, stoppen};
         AnlagenStatus JobStatus;
@@ -24,17 +25,21 @@ namespace Hargassner.Model
             JobStatus = AnlagenStatus.gestoppt;
             task = new Task(() => TheJob());
             context = SynchronizationContext.Current;
+            logger.Trace("ctor");
         }
         ~HSV22()
         {
             Dispose(false);
+            logger.Trace("Destructor");
         }
         public void Start()
         {
             task.Start();
+            logger.Trace("Start");
         }
         public void Stop()
         {
+            logger.Trace("Stop");
             if (JobStatus == AnlagenStatus.läuft)
             {
                 JobStatus = AnlagenStatus.stoppen;
@@ -47,13 +52,23 @@ namespace Hargassner.Model
             JobStatus = AnlagenStatus.läuft;
             TcpClient tcpClient = new TcpClient();
             var ip = IPAddress.Parse(HEIZUNG);
+            logger.Trace($"Connect {ip}");
             await tcpClient.ConnectAsync(ip, 4001);
             var stream = tcpClient.GetStream();
             using (var sr = new StreamReader(stream)) {
                 while (JobStatus == AnlagenStatus.läuft)
                 {
-                    var line = await sr.ReadLineAsync();
-                    context.Send((_) => NeueMeldung?.Invoke(this, line), null);
+                    var neueZeileLesen = sr.ReadLineAsync();
+                    await neueZeileLesen.ContinueWith((t) =>
+                    {
+                        var zeile = t.Result;
+                        if (!string.IsNullOrEmpty(zeile))
+                        {
+                            context.Send((_) => NeueMeldung?.Invoke(this, zeile), null);
+                            logger.Trace(zeile);
+                        }
+                    });
+
                 }
             }
             tcpClient.Close();
