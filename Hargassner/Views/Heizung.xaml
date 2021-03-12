@@ -10,6 +10,24 @@
              d:DataContext="{d:DesignInstance Type=dt:HeizungViewModel, IsDesignTimeCreatable=True}"
              Loaded="UserControl_Loaded">
     <Grid>
-        <TextBlock Text="{Binding Meldung}" Width="auto" TextWrapping="Wrap"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="{Binding Meldung}" Width="auto" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="1" Text="{Binding Kesselzustand}" FontSize="20"/>
+        <StackPanel Grid.Row="2" Orientation="Vertical">
+            <TextBlock Text="{Binding IstCO2}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturKessel}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturAbgas}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturAussen}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturAussenMW}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturVorlaufIst}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturVorlaufSoll}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturBoilerIst}" FontSize="16"/>
+            <TextBlock Text="{Binding TemparaturPufferIst}" FontSize="16"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

@@ -14,11 +14,12 @@ namespace Hargassner.Model
     class HSV22 : BindableBase, IDisposable
     {
         static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        const string HEIZUNG = "10.0.2.106";
+        const string HEIZUNG = "10.0.2.100";
         enum AnlagenStatus {gestoppt, starten, läuft, stoppen};
         AnlagenStatus JobStatus;
         public event EventHandler<string> NeueMeldung;
-        Task task;
+
+        readonly Task task;
         SynchronizationContext context = null;
         public HSV22()
         {
@@ -61,11 +62,11 @@ namespace Hargassner.Model
                     var neueZeileLesen = sr.ReadLineAsync();
                     await neueZeileLesen.ContinueWith((t) =>
                     {
-                        var zeile = t.Result;
+                        var zeile = t.Result.Replace('.',',');
                         if (!string.IsNullOrEmpty(zeile))
                         {
                             context.Send((_) => NeueMeldung?.Invoke(this, zeile), null);
-                            logger.Trace(zeile);
+                            logger.Info(zeile);
                         }
                     });
 
