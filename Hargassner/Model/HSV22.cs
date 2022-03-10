@@ -66,6 +66,10 @@ namespace Hargassner.Model
                         if (!string.IsNullOrEmpty(zeile))
                         {
                             context.Send((_) => NeueMeldung?.Invoke(this, zeile), null);
+                            if (zeile.StartsWith("z"))
+                            {
+                                zeile = '"' + zeile + '"';
+                            }
                             logger.Info(zeile);
                         }
                     });

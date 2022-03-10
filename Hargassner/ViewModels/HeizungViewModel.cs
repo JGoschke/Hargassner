@@ -123,7 +123,6 @@ namespace Hargassner.ViewModels
             }
             else if (e.PropertyName == nameof(Kesselzustand))
             {
-                logger.Trace($"{e.PropertyName} geändert");
                 using (HttpClient Homematic= new HttpClient())
                 {
                    var _ = await Homematic.GetStringAsync($"http://192.168.1.102:8181/e.exe?wert=dom.GetObject(\"Hzg Kesselzustand\").State(\"{Kesselzustand}\")");
@@ -131,7 +130,6 @@ namespace Hargassner.ViewModels
             }
             else if (e.PropertyName == nameof(TemparaturKessel))
             {
-                logger.Trace($"{e.PropertyName} geändert");
                 using (HttpClient Homematic = new HttpClient())
                 {
                     var _ = await Homematic.GetStringAsync($"http://192.168.1.102:8181/e.exe?wert=dom.GetObject(\"Hzg Temperatur Kessel\").State(\"{temparaturKessel}\")");
@@ -139,7 +137,6 @@ namespace Hargassner.ViewModels
             }
             else if (e.PropertyName == nameof(TemparaturAbgas))
             {
-                logger.Trace($"{e.PropertyName} geändert");
                 using (HttpClient Homematic = new HttpClient())
                 {
                     var _ = await Homematic.GetStringAsync($"http://192.168.1.102:8181/e.exe?wert=dom.GetObject(\"Hzg Temperatur Abgas\").State(\"{temparaturAbgas}\")");
@@ -147,7 +144,6 @@ namespace Hargassner.ViewModels
             }
             else if (e.PropertyName == nameof(TemparaturBoilerIst))
             {
-                logger.Trace($"{e.PropertyName} geändert");
                 using (HttpClient Homematic = new HttpClient())
                 {
                     var _ = await Homematic.GetStringAsync($"http://192.168.1.102:8181/e.exe?wert=dom.GetObject(\"Hzg Temperatur Boiler\").State(\"{temparaturBoilerIst}\")");
@@ -155,7 +151,6 @@ namespace Hargassner.ViewModels
             }
             else if (e.PropertyName == nameof(TemparaturPufferIst))
             {
-                logger.Trace($"{e.PropertyName} geändert");
                 using (HttpClient Homematic = new HttpClient())
                 {
                     var _ = await Homematic.GetStringAsync($"http://192.168.1.102:8181/e.exe?wert=dom.GetObject(\"Hzg Temperatur Puffer\").State(\"{temparaturPufferIst}\")");
